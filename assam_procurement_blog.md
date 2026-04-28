@@ -1,3 +1,9 @@
+---
+layout: post
+title: "My Blog Title"
+date: 2026-04-28
+---
+
 # What Assam Government Tenders Reveal About How India's Public Money Is Spent
 
 Every year, Indian governments spend roughly a quarter of GDP through public procurement. This data is not publicly available and is extremely fragmented, which holds the question of how it is being spent, and if it contributing to development and infrastructure of the country. Assam is one of the few states which adheres to the OCDS mapping of data, and has this information available. We took three years of post-pandemic spending, FY 2020–21 through FY 2022–23, to perform analysis on this subset of data. 
