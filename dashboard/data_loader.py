@@ -19,7 +19,7 @@ def load_base_data():
         FROM fact_tenders ft
         LEFT JOIN dim_buyer db ON ft.buyer_id = db.buyer_id
         LEFT JOIN dim_sector ds ON ft.sector_id = ds.sector_id
-        LEFT JOIN dim_district_derived dd ON ft.district_id = dd.district_id
+        LEFT JOIN dim_district_derived dd ON ft.district_procuring_id = dd.district_id
     """, conn)
     
     awards = pd.read_sql("""
