@@ -1,6 +1,6 @@
 # Chapter A — Concentration Analysis (RQ1) Walkthrough
 
-I have successfully completed the implementation of the concentration analysis module as outlined in the implementation plan. Here is a summary of the work done and the results generated.
+Implementation of the concentration analysis module as outlined in the implementation plan. Here is a summary of the work done and the results generated.
 
 ## 1. Metrics & Networks Modules
 We created two pure Python modules designed to be robust and testable:
