@@ -5,6 +5,7 @@ folium>=0.15.1
 streamlit-folium>=0.18.0
 pyvis>=0.3.2
 networkx>=3.2.1
+python-louvain
 scipy>=1.12.0
 requests>=2.31.0
 pyyaml>=6.0.1
