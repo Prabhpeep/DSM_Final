@@ -25,7 +25,7 @@ from collections import Counter
 from pathlib import Path
 
 DB_PATH      = Path("db/dsm.sqlite")
-EXCEL_PATH   = Path("ocds_mapped_data_fiscal_year_2016_2022_v3.xlsx")
+EXCEL_PATH   = Path("data/raw/ocds_mapped_data_fiscal_year_2016_2022_v3.xlsx")
 LABELS_CSV   = Path("src/sector_labels.csv")
 FY_INCLUDE   = {"2020-2021", "2021-2022", "2022-2023"}
 RANDOM_SEED  = 42

@@ -2,8 +2,8 @@ import pandas as pd
 import numpy as np
 import os, json
 
-FPATH = 'ocds_mapped_data_fiscal_year_2016_2022_v3.xlsx'
-OUT   = '/Users/prabhpreet16/Downloads/DSM_FP/dq_outputs'
+FPATH = 'data/raw/ocds_mapped_data_fiscal_year_2016_2022_v3.xlsx'
+OUT   = 'outputs/dq'
 os.makedirs(OUT, exist_ok=True)
 
 xf = pd.ExcelFile(FPATH)

@@ -20,7 +20,7 @@ from pathlib import Path
 import pandas as pd
 
 # --- Config ---
-XLSX_PATH = Path("ocds_mapped_data_fiscal_year_2016_2022_v3.xlsx")
+XLSX_PATH = Path("data/raw/ocds_mapped_data_fiscal_year_2016_2022_v3.xlsx")
 DB_PATH = Path("db/dsm.sqlite")
 TARGET_FYS = ("2020-2021", "2021-2022", "2022-2023")
 SECTOR_CODES = ["roads", "bridges", "buildings", "schools", "health",

@@ -34,8 +34,8 @@ def load_base_data():
 def load_risk_csvs():
     """Load integrity risk metrics directly from pre-computed CSVs."""
     try:
-        dom_df = pd.read_csv("reports/buyer_sector_risk_domestic.csv")
-        ext_df = pd.read_csv("reports/buyer_sector_risk_external.csv")
+        dom_df = pd.read_csv("outputs/reports_data/buyer_sector_risk_domestic.csv")
+        ext_df = pd.read_csv("outputs/reports_data/buyer_sector_risk_external.csv")
         return dom_df, ext_df
     except Exception as e:
         st.error(f"Error loading risk CSVs: {e}")
@@ -45,7 +45,7 @@ def load_risk_csvs():
 def fetch_assam_geojson():
     """Fetch bundled Assam district GeoJSON."""
     try:
-        with open("data/assam.geojson", "r") as f:
+        with open("data/geo/assam.geojson", "r") as f:
             return json.load(f)
     except Exception as e:
         print(f"Error loading bundled GeoJSON: {e}")
