@@ -525,11 +525,11 @@ automatically trigger an administrative escalation to the Comptroller and Audito
 eral (CAG).
 
 2. **Award-Stage HHI Triggers and Evaluation Committee
-Rotation.** The analysis of the “Captured-Supplier Buyers” cluster exhibits an
+Rotation.** The analysis of the captured supplier buyers cluster exhibits an
 extreme HHI of 4,533 and a top-three supplier share of 92%, which demonstrates
 that open-tender procedural compliance is insufficient to ensure genuinely competitive
-market outcomes. Consequently, it is recommended that a second-tier administrative
-review mechanism be introduced. This oversight mechanism should be automatically triggered
+market outcomes. Therefore, it is recommended that a second-tier administrative
+review mechanism should be introduced. This oversight mechanism should be automatically triggered
 whenever a procuring department’s rolling supplier HHI exceeds the highly concentrated threshold
 of 2,500 over two consecutive financial years. Furthermore, the mandatory rotation of evaluation
 committee members must be formally enforced for any buyer flagged under these criteria.
@@ -543,7 +543,7 @@ Specifically, any open tender valued above 25 lakh that receives fewer than thre
 must trigger mandatory re-tendering procedures, or alternatively, necessitate a formal,
 written justification submitted directly to the central financial authority.
 
-5. **Threshold Oversight Reform at 1 Crore. The identification** of an excess mass ratio of
+5. **Threshold Oversight Reform at 1 Crore.** The identification of an excess mass ratio of
 approximately 1.7 immediately below the 1 crore approval threshold is a statistical anomaly
 highly consistent with deliberate contract-sizing or fragmentation behaviour designed to bypass
 heightened scrutiny. To mitigate this evasion, the state should implement randomised, post-award
