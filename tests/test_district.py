@@ -16,7 +16,7 @@ sys.path.insert(0, str(ROOT))
 from src.classifiers.district import (
     load_gazetteer,
     classify,
-    detect_title_mismatch,
+    classify_execution,
     _exact_substring_match,
     _fuzzy_match,
     District,
@@ -157,42 +157,27 @@ class TestEntityFallback:
 
 
 # --------------------------------------------------------------------------- #
-# Title-district mismatch detection
+# Execution classification (formerly Title Mismatch)
 # --------------------------------------------------------------------------- #
-class TestTitleMismatch:
-    def test_mismatch_detected(self, gazetteer):
-        """Guwahati address but title mentions Nagaon → mismatch."""
-        has_mm, title_dist = detect_title_mismatch(
+class TestExecutionDistrict:
+    def test_execution_extracted_from_title(self, gazetteer):
+        """Guwahati address but title mentions Nagaon."""
+        exec_dist = classify_execution(
             "Construction of road in Nagaon district",
-            "Kamrup Metropolitan",
-            gazetteer.districts,
+            gazetteer,
         )
-        assert has_mm is True
-        assert title_dist == "Nagaon"
+        assert exec_dist == "Nagaon"
 
-    def test_no_mismatch_when_same(self, gazetteer):
-        has_mm, _ = detect_title_mismatch(
-            "Construction of bridge in Guwahati",
-            "Kamrup Metropolitan",
-            gazetteer.districts,
+    def test_no_execution_match_returns_none(self, gazetteer):
+        exec_dist = classify_execution(
+            "Construction of bridge",
+            gazetteer,
         )
-        assert has_mm is False
+        assert exec_dist is None
 
-    def test_no_mismatch_when_unclassified(self, gazetteer):
-        has_mm, _ = detect_title_mismatch(
-            "Construction in Nagaon",
-            "Unclassified",
-            gazetteer.districts,
-        )
-        assert has_mm is False
-
-    def test_no_mismatch_when_title_empty(self, gazetteer):
-        has_mm, _ = detect_title_mismatch(
-            None,
-            "Kamrup Metropolitan",
-            gazetteer.districts,
-        )
-        assert has_mm is False
+    def test_no_execution_when_title_empty(self, gazetteer):
+        exec_dist = classify_execution(None, gazetteer)
+        assert exec_dist is None
 
 
 # --------------------------------------------------------------------------- #
