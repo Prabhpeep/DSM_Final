@@ -1,0 +1,409 @@
+# ============================================================================
+# Assam District Gazetteer — 35 districts (2011 Census boundaries)
+#
+# Canonical names follow the 2011 Census of India.
+# Census codes use the standard AS-prefixed numbering.
+# Aliases include: common alternate spellings, district HQ town names,
+# prominent locality names found in tender bid-opening addresses, and
+# abbreviations observed in the OCDS Assam dataset.
+#
+# Note on post-2011 districts:
+#   After 2011, five new districts were carved out:
+#     Majuli (from Jorhat, 2016), Hojai (from Nagaon, 2015),
+#     Biswanath (from Sonitpur, 2015), Charaideo (from Sivasagar, 2015),
+#     South Salmara-Mankachar (from Dhubri, 2016),
+#     West Karbi Anglong (from Karbi Anglong, 2016),
+#     Bajali (from Barpeta, 2020), Tamulpur (from Baksa, 2022).
+#   These are included here using ad-hoc census codes (AS028–AS035)
+#   since they have no 2011 Census code. The classifier treats them as
+#   separate districts — adjust if your Census data uses pre-split boundaries.
+# ============================================================================
+
+# --------------------------------------------------------------------------
+# state_hq_keywords: addresses containing ONLY these terms (and no district-
+# specific alias) are classified as Kamrup Metropolitan, since virtually all
+# state-level government offices are physically located in Guwahati.
+# --------------------------------------------------------------------------
+state_hq_keywords:
+  - "Assam"
+  - "ASSAM"
+  - "NHM"
+  - "PWRD"
+  - "APDCL"
+  - "AEGCL"
+  - "APGCL"
+  - "GMDA"
+  - "APHCL"
+  - "AHVD"
+  - "AMSCL"
+  - "AMTRON"
+  - "AEDA"
+  - "FREMAA"
+  - "ALPCO"
+  - "AIWTD"
+  - "DoHUA"
+
+# --------------------------------------------------------------------------
+# btc_keywords: addresses with these terms (and no more-specific district
+# within BTC — Kokrajhar, Chirang, Baksa, Udalguri) default to Kokrajhar,
+# which is the BTC capital.
+# --------------------------------------------------------------------------
+btc_keywords:
+  - "BTC"
+  - "Bodoland"
+
+# --------------------------------------------------------------------------
+# circle_map: PWD / WR circle abbreviations → district
+# --------------------------------------------------------------------------
+circle_map:
+  JRC: "Jorhat"
+  NRC: "Nagaon"
+  WAC: "Goalpara"
+  GRC: "Kamrup Metropolitan"
+  Glp: "Goalpara"
+
+districts:
+
+  # ---- LOWER ASSAM / KAMRUP REGION ----
+
+  - name: "Kamrup Metropolitan"
+    census_code: "AS015"
+    aliases:
+      - "Kamrup Metropolitan"
+      - "Kamrup Metro"
+      - "Guwahati"
+      - "GUWAHATI"
+      - "Ghy"
+      - "GHY"
+      - "Dispur"
+      - "Chandmari"
+      - "Paltanbazar"
+      - "Paltan Bazar"
+      - "Panbazar"
+      - "Khanapara"
+      - "Ganeshguri"
+      - "Christianbasti"
+      - "Christanbasti"
+      - "Christian Basti"
+      - "Chenikuthi"
+      - "Cenikuthi"
+      - "Narengi"
+      - "Basistha"
+      - "Jalukbari"
+      - "Bijulee Bhawan"
+      - "Bijulee bhawan"
+      - "Janata Bhawan"
+      - "Secretariat"
+      - "Rupnagar"
+      - "Rehabari"
+      - "Housefed"
+      - "Panjabari"
+      - "Juripar"
+      - "Ulubari"
+      - "Bhangagarh"
+      - "Beltola"
+      - "Zoo Road"
+      - "Uzanbazar"
+      - "Fancy Bazar"
+      - "Sixmile"
+      - "Six Mile"
+      - "Betkuchi"
+      - "Hengerabari"
+      - "Bamunimaidam"
+      - "Maligaon"
+      - "Paribahan Bhawan"
+      - "GMC"
+      - "GMDA"
+      - "Rajgarh"
+      - "Rajgarh Main"
+      - "Amingaon"
+
+  - name: "Kamrup"
+    census_code: "AS014"
+    aliases:
+      - "Kamrup Rural"
+      - "Mirza"
+      - "Rangia"
+      - "Hajo"
+      - "Sualkuchi"
+      - "Chaygaon"
+
+  - name: "Nalbari"
+    census_code: "AS013"
+    aliases:
+      - "Nalbari"
+      - "NALBARI"
+      - "Tihu"
+      - "Mukalmua"
+
+  - name: "Barpeta"
+    census_code: "AS012"
+    aliases:
+      - "Barpeta"
+      - "BARPETA"
+      - "Barpeta Road"
+      - "Howly"
+      - "Sarthebari"
+      - "Mandia"
+
+  - name: "Bajali"
+    census_code: "AS035"
+    aliases:
+      - "Bajali"
+      - "Pathsala"
+
+  - name: "Baksa"
+    census_code: "AS026"
+    aliases:
+      - "Baksa"
+      - "Mushalpur"
+
+  - name: "Tamulpur"
+    census_code: "AS034"
+    aliases:
+      - "Tamulpur"
+
+  # ---- BODOLAND / BTC REGION ----
+
+  - name: "Kokrajhar"
+    census_code: "AS009"
+    aliases:
+      - "Kokrajhar"
+      - "KOKRAJHAR"
+      - "Gossaigaon"
+      - "Titaguri"
+
+  - name: "Chirang"
+    census_code: "AS025"
+    aliases:
+      - "Chirang"
+      - "Kajalgaon"
+
+  - name: "Udalguri"
+    census_code: "AS027"
+    aliases:
+      - "Udalguri"
+      - "Bhergaon"
+      - "Khoirabari"
+
+  # ---- WESTERN ASSAM ----
+
+  - name: "Dhubri"
+    census_code: "AS010"
+    aliases:
+      - "Dhubri"
+      - "DHUBRI"
+      - "Bilasipara"
+
+  - name: "South Salmara-Mankachar"
+    census_code: "AS033"
+    aliases:
+      - "South Salmara"
+      - "Mankachar"
+
+  - name: "Goalpara"
+    census_code: "AS011"
+    aliases:
+      - "Goalpara"
+      - "GOALPARA"
+      - "Lakhipur"
+
+  - name: "Bongaigaon"
+    census_code: "AS024"
+    aliases:
+      - "Bongaigaon"
+      - "BONGAIGAON"
+      - "Abhayapuri"
+      - "North Salmara"
+
+  # ---- CENTRAL ASSAM ----
+
+  - name: "Darrang"
+    census_code: "AS016"
+    aliases:
+      - "Darrang"
+      - "Mangaldoi"
+      - "Mangaldai"
+
+  - name: "Sonitpur"
+    census_code: "AS017"
+    aliases:
+      - "Sonitpur"
+      - "Tezpur"
+      - "TEZPUR"
+      - "Dhekiajuli"
+
+  - name: "Biswanath"
+    census_code: "AS030"
+    aliases:
+      - "Biswanath"
+      - "Biswanath Chariali"
+
+  - name: "Nagaon"
+    census_code: "AS018"
+    aliases:
+      - "Nagaon"
+      - "NAGAON"
+      - "Nowgong"
+      - "Kaliabor"
+      - "Raha"
+      - "Dhing"
+
+  - name: "Hojai"
+    census_code: "AS029"
+    aliases:
+      - "Hojai"
+      - "Lanka"
+      - "Lumding"
+      - "Doboka"
+
+  - name: "Morigaon"
+    census_code: "AS019"
+    aliases:
+      - "Morigaon"
+      - "Marigaon"
+      - "Jagiroad"
+      - "Laharighat"
+
+  # ---- UPPER ASSAM ----
+
+  - name: "Jorhat"
+    census_code: "AS022"
+    aliases:
+      - "Jorhat"
+      - "JORHAT"
+      - "Titabor"
+      - "Mariani"
+      - "AAU"
+
+  - name: "Majuli"
+    census_code: "AS028"
+    aliases:
+      - "Majuli"
+      - "Garamur"
+      - "Kamalabari"
+
+  - name: "Golaghat"
+    census_code: "AS021"
+    aliases:
+      - "Golaghat"
+      - "GOLAGHAT"
+      - "Bokakhat"
+      - "Dergaon"
+      - "Sarupathar"
+      - "Numaligarh"
+
+  - name: "Sivasagar"
+    census_code: "AS020"
+    aliases:
+      - "Sivasagar"
+      - "Sibsagar"
+      - "Sivsagar"
+      - "Nazira"
+      - "Gaurisagar"
+
+  - name: "Charaideo"
+    census_code: "AS031"
+    aliases:
+      - "Charaideo"
+      - "Sonari"
+
+  - name: "Dibrugarh"
+    census_code: "AS023"
+    aliases:
+      - "Dibrugarh"
+      - "DIBRUGARH"
+      - "Debrugarh"
+      - "Duliajan"
+      - "Naharkatiya"
+      - "Moran"
+      - "Namrup"
+
+  - name: "Tinsukia"
+    census_code: "AS004"
+    aliases:
+      - "Tinsukia"
+      - "TINSUKIA"
+      - "Digboi"
+      - "Margherita"
+      - "Doomdooma"
+      - "Doom Dooma"
+      - "Makum"
+      - "Sadiya"
+      - "Ledo"
+
+  - name: "Lakhimpur"
+    census_code: "AS005"
+    aliases:
+      - "Lakhimpur"
+      - "LAKHIMPUR"
+      - "North Lakhimpur"
+      - "N. Lakhimpur"
+      - "Dhakuakhana"
+      - "Bihpuria"
+      - "Laluk"
+
+  - name: "Dhemaji"
+    census_code: "AS006"
+    aliases:
+      - "Dhemaji"
+      - "DHEMAJI"
+      - "Silapathar"
+      - "Jonai"
+
+  # ---- BARAK VALLEY ----
+
+  - name: "Cachar"
+    census_code: "AS001"
+    aliases:
+      - "Cachar"
+      - "CACHAR"
+      - "Silchar"
+      - "SILCHAR"
+      - "Srikona"
+
+  - name: "Karimganj"
+    census_code: "AS002"
+    aliases:
+      - "Karimganj"
+      - "KARIMGANJ"
+      - "Badarpur"
+      - "Batarashi"
+      - "Bataroshi"
+
+  - name: "Hailakandi"
+    census_code: "AS003"
+    aliases:
+      - "Hailakandi"
+      - "HAILAKANDI"
+      - "Lala"
+
+  # ---- HILL DISTRICTS ----
+
+  - name: "Karbi Anglong"
+    census_code: "AS007"
+    aliases:
+      - "Karbi Anglong"
+      - "Karbi-Anglong"
+      - "Diphu"
+      - "DIPHU"
+      - "Bokajan"
+      - "Howraghat"
+
+  - name: "West Karbi Anglong"
+    census_code: "AS032"
+    aliases:
+      - "West Karbi Anglong"
+      - "Hamren"
+
+  - name: "Dima Hasao"
+    census_code: "AS008"
+    aliases:
+      - "Dima Hasao"
+      - "Dima-Hasao"
+      - "North Cachar Hills"
+      - "N.C. Hills"
+      - "NC Hills"
+      - "Haflong"
+      - "Halflong"
+      - "Maibang"
