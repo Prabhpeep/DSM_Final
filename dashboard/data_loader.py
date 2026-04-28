@@ -1,13 +1,12 @@
 import sqlite3
 import pandas as pd
 import streamlit as st
+import json
 import sys
-import requests
 from pathlib import Path
 
 # Add src to sys.path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from src.metrics.integrity import load_data as load_integrity_data, build_risk_table
 
 DB_PATH = Path("db/dsm.sqlite")
 
@@ -32,22 +31,24 @@ def load_base_data():
     return tenders, awards
 
 @st.cache_data(ttl=3600)
-def load_risk_data():
-    """Load and compute integrity risk metrics."""
-    data = load_integrity_data(DB_PATH)
-    risk_df = build_risk_table(data)
-    return risk_df
+def load_risk_csvs():
+    """Load integrity risk metrics directly from pre-computed CSVs."""
+    try:
+        dom_df = pd.read_csv("reports/buyer_sector_risk_domestic.csv")
+        ext_df = pd.read_csv("reports/buyer_sector_risk_external.csv")
+        return dom_df, ext_df
+    except Exception as e:
+        st.error(f"Error loading risk CSVs: {e}")
+        return pd.DataFrame(), pd.DataFrame()
 
 @st.cache_data(ttl=3600)
 def fetch_assam_geojson():
-    """Fetch Assam district GeoJSON."""
-    url = "https://raw.githubusercontent.com/HindustanTimesLabs/shapefiles/master/state_ut/assam/district.geojson"
+    """Fetch bundled Assam district GeoJSON."""
     try:
-        r = requests.get(url, timeout=10)
-        if r.status_code == 200:
-            return r.json()
+        with open("data/assam.geojson", "r") as f:
+            return json.load(f)
     except Exception as e:
-        print(f"Error fetching GeoJSON: {e}")
+        print(f"Error loading bundled GeoJSON: {e}")
     return None
 
 def filter_data(tenders, awards, fiscal_years, sectors, districts, buyers, methods):

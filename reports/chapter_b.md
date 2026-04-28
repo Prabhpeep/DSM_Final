@@ -16,6 +16,8 @@ We analyze five structural integrity indicators computed at the buyer × sector 
 
 **Composite Score:** Each indicator is converted to a percentile rank (0-100) within its sector to ensure within-sector comparability. The final composite score is an equal-weighted average of the five percentiles.
 
+To ensure fair comparison, we partition the dataset into two regimes based on buyer names: **Domestic Procurement** (following Indian GFR) and **Externally-Funded Procurement** (following World Bank, ADB, or JICA guidelines). The headline rankings and analysis focus solely on the Domestic panel, while Externally-Funded results are summarized separately.
+
 ## 3. Findings
 
 ### Price Deviation
@@ -24,7 +26,7 @@ The overall median price deviation for the clean subset is negative (-0.06), ind
 ![Price Deviation by Sector](figures/price_deviation_by_sector.png)
 
 ### Single-Bidder Rate
-Globally, ~6% of tenders with bid data received exactly one bid. Sectoral variation is stark, with some sectors exhibiting elevated structural single-bidder rates.
+Globally, ~6% of tenders with bid data received exactly one bid. Sectoral variation is stark, with some sectors exhibiting elevated structural single-bidder rates. The highest-flagged cells include the **Department of Cultural Affairs** (other) at 61.0% single-bidder (a 10× deviation from the baseline), and the **Department of Housing and Urban Affairs** (buildings) at 16.7%.
 ![Single-Bidder Rate by Sector](figures/single_bidder_by_sector.png)
 
 ### Non-Open Method Share
@@ -35,20 +37,30 @@ We observe noticeable bunching below the ₹1 Crore threshold (excess mass ratio
 ![Threshold Bunching - All](figures/threshold_bunching_all.png)
 
 ### Supplier-Buyer Stickiness
-Stickiness is exceptionally high across the dataset, with the median buyer awarding 100% of their sector value to their top 3 suppliers. This is partially a mechanical result of small buyer portfolios, but the pattern persists even when filtering for larger buyers.
+Stickiness is exceptionally high across the dataset. The unfiltered median buyer awards 100% of their sector value to their top 3 suppliers, but this is largely a mechanical result of small portfolios (e.g., exactly 3 suppliers). When filtering strictly for competitive markets (5 or more active suppliers), the median top-3 supplier share is 60.9%, revealing that substantial concentration persists even in markets capable of broader competition.
 ![Stickiness Distribution](figures/stickiness_distribution.png)
 
+### Highest-Impact Cells
+Among the largest single procurement portfolios in Assam, the following exhibit composite risk scores above the within-sector median, highlighting where substantial fiscal footprints intersect with structural risk. This ranking surfaces the cells with the largest fiscal footprint:
+
+1. **Public Works Building and NH Department** (buildings): n=877, composite=72.5
+2. **Assam Power Distribution Company Ltd** (electricity_power): n=489, composite=65.6
+3. **Public Works Roads Department** (bridges): n=59, composite=73.2
+
 ### Composite Risk and Top Pairings
-The composite risk score successfully differentiates portfolios. Sensitivity analysis confirms the rankings are stable across different weighting schemes (Spearman ρ > 0.85).
+The composite risk score successfully differentiates portfolios. *Top-N ranking is stable across MIN_TENDERS_FOR_COMPOSITE values of {10, 15, 20} — Spearman ρ > 0.89.*
 
 ![Composite Heatmap](figures/composite_heatmap.png)
 
-**Top-5 Buyer × Sector Risk Pairings:**
-1. **Finance Department - World Bank Tenders** (buildings)
-2. **Urban Affairs Department Externally Aided Project** (water_sanitation)
-3. **Assam State Disaster Management Authority- Externally Aided Project** (schools)
-4. **Assam Power Generation Company Limited APGCL - ADB** (electricity_power)
-5. **Urban Development Department** (water_sanitation)
+**Top-5 Domestic Buyer × Sector Risk Pairings (Minimum 15 Tenders):**
+1. **Urban Development Department** (water_sanitation)
+2. **Department of Cultural Affairs** (other)
+3. **Department of Housing and Urban Affairs** (buildings)
+4. **Elementary Education Department** (schools)
+5. **Guwahati Municipal Corporation** (buildings)
+
+### Panel B: Externally-Funded Procurement
+Externally-funded projects (e.g., World Bank, ADB, JICA) operate under distinct international procurement guidelines rather than domestic GFR. While we summarize their metrics separately—such as the elevated risk scores seen in **Public Works Roads Department-Externally Aided Project** (roads) and **Finance Department - World Bank Tenders** (other)—these are not ranked against the domestic baseline due to differing statutory thresholds and market structures.
 
 ## 4. Limitations
 *   **Selection Bias:** Because we only have award values for ~29% of tenders, indicators relying on award values (Price Deviation, Stickiness) describe the *awarded subset*, not all procurement.

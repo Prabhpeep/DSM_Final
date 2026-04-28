@@ -54,8 +54,6 @@ from src.metrics.networks import (
     build_bipartite_graph,
     compute_centrality,
     degree_distribution,
-    detect_communities,
-    project_supplier_graph,
     save_gexf,
     top_n_subgraph,
 )
@@ -352,34 +350,7 @@ def run_network(merged: pd.DataFrame) -> None:
     cent_s = compute_centrality(G, 1)
     print(cent_s.head(15)[["label", "degree", "eigenvector_centrality", "betweenness_centrality"]].to_string(index=False))
 
-    # Supplier projection + Louvain
-    print_section("LOUVAIN COMMUNITY DETECTION (supplier projection)")
-    G_proj = project_supplier_graph(G)
-    print(f"  Projected graph: {G_proj.number_of_nodes()} nodes, {G_proj.number_of_edges():,} edges")
 
-    communities = detect_communities(G_proj)
-    n_comm = len(set(communities.values())) if communities else 0
-    print(f"  Communities found: {n_comm}")
-
-    if communities:
-        from collections import Counter
-        comm_sizes = Counter(communities.values())
-        top_communities = comm_sizes.most_common(15)
-        print("  Top 15 community sizes:")
-        for cid, size in top_communities:
-            print(f"    Community {cid}: {size} suppliers")
-
-        # Bar chart of community sizes
-        fig, ax = plt.subplots(figsize=(10, 5))
-        sizes = sorted(comm_sizes.values(), reverse=True)
-        ax.bar(range(len(sizes)), sizes, color="steelblue", alpha=0.8)
-        ax.set_xlabel("Community rank")
-        ax.set_ylabel("Number of suppliers")
-        ax.set_title(f"Louvain Community Sizes — {n_comm} communities detected", fontweight="bold")
-        fig.tight_layout()
-        fig.savefig(FIG_DIR / "supplier_communities.png")
-        plt.close(fig)
-        print(f"  Saved {FIG_DIR / 'supplier_communities.png'}")
 
     # Network diagram (top 50 buyers + top 50 suppliers)
     G_sub = top_n_subgraph(G, 50, 50)
@@ -433,6 +404,8 @@ def run_clustering(val_df: pd.DataFrame, tenders: pd.DataFrame) -> None:
     print_section("BUYER CLUSTERING")
 
     features = build_buyer_features(val_df, tenders)
+    total_buyers = tenders["buyer_id"].nunique()
+    print(f"  Filtering applied: kept {features.shape[0]} active buyers out of {total_buyers} original buyers (dropped {total_buyers - features.shape[0]}).")
     print(f"  Feature matrix: {features.shape[0]} buyers × {features.shape[1]} features")
     print(f"  NaN counts per feature:")
     print(features.isna().sum().to_string())

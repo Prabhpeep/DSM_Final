@@ -34,7 +34,6 @@
 import sys, os
 
 # Ensure we run from project root regardless of notebook location
-os.chdir(os.path.join(os.path.dirname(os.path.abspath("__file__")), ".."))
 if os.path.basename(os.getcwd()) == "notebooks":
     os.chdir("..")
 sys.path.insert(0, os.getcwd())
@@ -368,10 +367,13 @@ plt.show()
 # Two sensitivity variants: price deviation 2× weight, single-bidder 2× weight.
 
 # %%
-risk_df = build_risk_table(data)
+tables = build_risk_table(data)
+risk_df = tables["domestic"]
+external_df = tables["external"]
 
-print(f"Risk table: {len(risk_df)} buyer × sector combinations")
+print(f"Risk table (Domestic): {len(risk_df)} buyer × sector combinations")
 print(f"  With valid composite_equal: {risk_df['composite_equal'].notna().sum()}")
+print(f"Risk table (External): {len(external_df)} buyer × sector combinations")
 
 risk_df[["price_dev_median", "single_bidder_rate", "non_open_share",
          "bunching_composite", "stickiness_top3", "composite_equal",
@@ -497,13 +499,21 @@ plt.show()
 # ## 10. Export Risk Table
 
 # %%
-# Save full risk table
-risk_df.to_csv("reports/buyer_sector_risk.csv", index=False)
-print(f"Exported buyer_sector_risk.csv: {len(risk_df)} rows")
+import os
+print("CWD BEFORE EXPORT:", os.getcwd())
+
+# Save full risk tables
+risk_df.to_csv("reports/buyer_sector_risk_domestic.csv", index=False)
+external_df.to_csv("reports/buyer_sector_risk_external.csv", index=False)
+print(f"Exported buyer_sector_risk_domestic.csv: {len(risk_df)} rows")
+print(f"Exported buyer_sector_risk_external.csv: {len(external_df)} rows")
 
 # Save top-20
-top20.to_csv("reports/top20_risk_pairings.csv", index=False)
-print(f"Exported top20_risk_pairings.csv: {len(top20)} rows")
+top20.to_csv("reports/top20_risk_pairings_domestic.csv", index=False)
+top20_ext = top_risk_pairings(external_df, n=20)
+top20_ext.to_csv("reports/top20_risk_pairings_external.csv", index=False)
+print(f"Exported top20_risk_pairings_domestic.csv: {len(top20)} rows")
+print(f"Exported top20_risk_pairings_external.csv: {len(top20_ext)} rows")
 
 # %% [markdown]
 # ## 11. Summary

@@ -159,7 +159,7 @@ def compute_centrality(G: nx.Graph, partition: int) -> pd.DataFrame:
                 pass
 
     # Betweenness centrality
-    betw = nx.betweenness_centrality(G, weight="weight")
+    betw = nx.betweenness_centrality(G, weight=None)
 
     rows = []
     for n in nodes:
@@ -179,36 +179,7 @@ def compute_centrality(G: nx.Graph, partition: int) -> pd.DataFrame:
     )
 
 
-# ── Supplier projection + Louvain ─────────────────────────────────────────
 
-def project_supplier_graph(G: nx.Graph) -> nx.Graph:
-    """Project the bipartite graph onto the supplier partition.
-
-    Two suppliers are connected if they share at least one buyer.
-    Edge weight = number of shared buyers (simple count projection).
-    """
-    supplier_nodes = {n for n, d in G.nodes(data=True) if d.get("bipartite") == 1}
-    G_proj = bipartite.weighted_projected_graph(G, supplier_nodes)
-
-    # Copy labels
-    for n in G_proj.nodes():
-        if n in G.nodes:
-            G_proj.nodes[n]["label"] = G.nodes[n].get("label", n)
-            G_proj.nodes[n]["node_type"] = "supplier"
-
-    return G_proj
-
-
-def detect_communities(G_proj: nx.Graph) -> dict:
-    """Louvain community detection on the supplier projection.
-
-    Returns
-    -------
-    dict mapping node → community_id.
-    """
-    if len(G_proj) == 0:
-        return {}
-    return community_louvain.best_partition(G_proj, weight="weight", random_state=42)
 
 
 # ── Subgraph extraction ───────────────────────────────────────────────────

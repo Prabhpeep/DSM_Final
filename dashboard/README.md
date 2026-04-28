@@ -1,22 +1,23 @@
 # Assam Procurement Dashboard
 
-This interactive dashboard visualizes the concentration, integrity, and geographic aspects of public procurement in Assam (FY 2020-2023).
+This project analyzes Assam's public procurement data from FY 2020-23, using the CivicDataLab OCDS dataset to map market concentration and compute structural integrity indicators based on the Government Transparency Institute methodology. The dashboard serves as a guided narrative to explore these findings interactively.
 
-## Setup & Run
+## Local Run Instructions
 
-1. Ensure the SQLite database `db/dsm.sqlite` is built and present in the project root.
-2. Install the required dependencies:
+1. Ensure you have the SQLite database `db/dsm.sqlite` and the reports in `reports/` built.
+2. Install dependencies:
    ```bash
    pip install -r dashboard/requirements.txt
    ```
-3. Run the Streamlit application from the project root:
+3. Run the Streamlit app:
    ```bash
    streamlit run dashboard/app.py
    ```
 
-## Pages
-- **Overview:** General procurement KPIs.
-- **Concentration:** Market concentration indicators (HHI, Gini, Top-20 suppliers).
-- **Integrity:** Structural integrity risk indicators (Fazekas/GTI methodology).
-- **Geographic:** District-level distribution of spending.
-- **Network:** Interactive buyer-supplier bipartite graph.
+## Streamlit Cloud Deployment
+
+To deploy on Streamlit Cloud:
+- Point it at this repository and the `main` branch.
+- Set the entry point to `dashboard/app.py`.
+- Set the requirements file path to `dashboard/requirements.txt` (or Streamlit will automatically find it).
+- URL: [Placeholder for live URL]

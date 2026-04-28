@@ -41,6 +41,7 @@ PRICE_DEV_CLIP_HI = 2.0
 # Minimum sample sizes per buyer × sector group
 MIN_AWARDS_PRICE_DEV = 3
 MIN_TENDERS_SINGLE_BID = 5
+MIN_TENDERS_FOR_COMPOSITE = 15
 
 # Threshold bunching thresholds (INR)
 THRESHOLDS = {
@@ -105,6 +106,12 @@ def load_data(db_path: Path = DB_PATH) -> dict[str, pd.DataFrame]:
 
     # Merge tenders with awards (tender-award grain)
     merged = tenders.merge(awards, on="ocid", how="left", suffixes=("", "_award"))
+
+    # Create is_externally_funded flag
+    tenders["is_externally_funded"] = tenders["buyer_name"].str.contains(
+        r"World Bank|ADB|JICA|Externally Aided|Externally Funded|External Aid|EAP",
+        case=False, na=False, regex=True
+    )
 
     return {
         "tenders": tenders,
@@ -208,8 +215,11 @@ def compute_non_open_share(tenders: pd.DataFrame) -> pd.DataFrame:
     def _agg(g: pd.DataFrame) -> pd.Series:
         total = len(g)
         non_open = (g["procurement_method"] != "Open Tender").sum()
+        share = non_open / total if total >= 5 else np.nan
+        if non_open < 2:
+            share = np.nan
         return pd.Series({
-            "non_open_share": non_open / total if total > 0 else np.nan,
+            "non_open_share": share,
             "non_open_count": non_open,
             "total_tenders": total,
         })
@@ -358,7 +368,7 @@ def compute_stickiness(merged: pd.DataFrame) -> pd.DataFrame:
         n_suppliers, top3_value
     """
     df = merged[
-        (merged["award_value_amount"] > 1)
+        (merged["award_value_amount"] > 10000)
         & (merged["supplier_canonical_id"].notna())
     ].copy()
 
@@ -371,7 +381,7 @@ def compute_stickiness(merged: pd.DataFrame) -> pd.DataFrame:
         total_val = supplier_totals.sum()
         top3_val = supplier_totals.head(3).sum()
         n_suppliers = len(supplier_totals)
-        stickiness = top3_val / total_val if total_val > 0 else np.nan
+        stickiness = top3_val / total_val if total_val > 0 and n_suppliers >= 5 else np.nan
 
         return pd.Series({
             "stickiness_top3": stickiness,
@@ -441,9 +451,6 @@ def composite_score(
     df["composite_pricedev2x"] = (
         df[pctile_cols].values * weights_a[np.newaxis, :]
     ).sum(axis=1)
-    # Handle rows where some pctiles are NaN
-    has_nan = df[pctile_cols].isna().any(axis=1)
-    df.loc[has_nan, "composite_pricedev2x"] = np.nan
 
     # Sensitivity B: single-bidder 2× weight
     weights_b = np.array([1, 2, 1, 1, 1], dtype=float)
@@ -451,7 +458,14 @@ def composite_score(
     df["composite_singlebid2x"] = (
         df[pctile_cols].values * weights_b[np.newaxis, :]
     ).sum(axis=1)
-    df.loc[has_nan, "composite_singlebid2x"] = np.nan
+
+    # Bug A strict variant: require at least 3 indicators
+    n_indicators_present = df[pctile_cols].notna().sum(axis=1)
+    df.loc[n_indicators_present < 3, ["composite_equal", "composite_pricedev2x", "composite_singlebid2x"]] = np.nan
+
+    # Bug B: minimum tender sample for composite ranking
+    if "total_tenders" in df.columns:
+        df.loc[df["total_tenders"] < MIN_TENDERS_FOR_COMPOSITE, ["composite_equal", "composite_pricedev2x", "composite_singlebid2x"]] = np.nan
 
     return df
 
@@ -583,7 +597,7 @@ def build_risk_table(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
 
     Returns
     -------
-    risk_df : DataFrame with one row per (buyer_id, sector_id) combo
+    dict with keys 'domestic' and 'external', each containing a DataFrame
     """
     merged = data["merged"]
     tenders = data["tenders"]
@@ -606,7 +620,11 @@ def build_risk_table(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
     # Assemble: start from all buyer × sector combos in tenders
     base = (
         tenders.groupby(["buyer_id", "sector_id"])
-        .agg(buyer_name=("buyer_name", "first"), sector_name=("sector_name", "first"))
+        .agg(
+            buyer_name=("buyer_name", "first"),
+            sector_name=("sector_name", "first"),
+            is_externally_funded=("is_externally_funded", "first")
+        )
         .reset_index()
     )
 
@@ -624,10 +642,15 @@ def build_risk_table(data: dict[str, pd.DataFrame]) -> pd.DataFrame:
             indicator_df[available], on=["buyer_id", "sector_id"], how="left"
         )
 
-    # Composite scores
-    risk_df = composite_score(risk_df)
+    # Partition by funding regime and compute composite scores independently
+    domestic = risk_df[~risk_df["is_externally_funded"]].copy()
+    external = risk_df[risk_df["is_externally_funded"]].copy()
 
-    return risk_df
+    domestic = composite_score(domestic)
+    if len(external) > 0:
+        external = composite_score(external)
+
+    return {"domestic": domestic, "external": external}
 
 
 # ---------------------------------------------------------------------------
@@ -642,8 +665,10 @@ def main() -> None:
     print(f"  merged:  {len(data['merged']):,}")
 
     print("\nBuilding risk table ...")
-    risk_df = build_risk_table(data)
-    print(f"  buyer × sector combos: {len(risk_df):,}")
+    tables = build_risk_table(data)
+    risk_df = tables["domestic"]
+    print(f"  buyer × sector combos (domestic): {len(risk_df):,}")
+    print(f"  buyer × sector combos (external): {len(tables['external']):,}")
 
     # Indicator summaries
     for col in ["price_dev_median", "single_bidder_rate", "non_open_share",

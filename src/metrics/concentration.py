@@ -175,6 +175,15 @@ def build_buyer_features(awards_df: pd.DataFrame,
     -------
     DataFrame indexed by buyer_id with the 6 features + buyer_name.
     """
+    # Filter out buyers with fewer than 30 tenders
+    MIN_TENDERS_FOR_CLUSTERING = 30
+    active_buyers = (
+        tenders_df.groupby("buyer_id").size()
+        .loc[lambda s: s >= MIN_TENDERS_FOR_CLUSTERING].index
+    )
+    tenders_df = tenders_df[tenders_df["buyer_id"].isin(active_buyers)]
+    awards_df = awards_df[awards_df["buyer_id"].isin(active_buyers)]
+
     # 1. median tender value per buyer
     median_val = tenders_df.groupby("buyer_id")["tender_value_amount"].median()
 
@@ -217,7 +226,7 @@ def build_buyer_features(awards_df: pd.DataFrame,
 
 
 def cluster_buyers(features_df: pd.DataFrame,
-                   k_range: range = range(3, 9),
+                   k_range: range = range(3, 6),
                    random_state: int = 42) -> tuple[np.ndarray, int, dict[int, float]]:
     """KMeans clustering with silhouette-score K selection.
 
@@ -246,5 +255,15 @@ def cluster_buyers(features_df: pd.DataFrame,
         scores[k] = sc
         if sc > best_score:
             best_k, best_score, best_labels = k, sc, labels
+
+    # Guard: decrement best_k if any cluster is a singleton
+    while best_k > 4:  # Stop at K=4 to fulfill the 4-cluster narrative
+        _, counts = np.unique(best_labels, return_counts=True)
+        if min(counts) > 1:
+            break
+        
+        best_k -= 1
+        km = KMeans(n_clusters=best_k, n_init=10, random_state=random_state)
+        best_labels = km.fit_predict(X)
 
     return best_labels, best_k, scores
