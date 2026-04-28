@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#1f77b4", "font": {"color": "black"}, "id": "B_86", "label": "Rashtriya Madhy", "shape": "dot", "title": "buyer: Rashtriya Madhyamik Siksha Abhijan"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_53", "label": "Finance Departm", "shape": "dot", "title": "buyer: Finance Department - World Bank Tenders"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_237", "label": "ANIL DAS CONSTR", "shape": "dot", "title": "supplier: ANIL DAS CONSTRUCTION PVT LTD"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_3982", "label": "OM CONSTRUCTION", "shape": "dot", "title": "supplier: OM CONSTRUCTIONS"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_11", "label": "Assam Power Dis", "shape": "dot", "title": "buyer: Assam Power Distribution Company Limited- Externally Aided Project"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_2474", "label": "Larsen and Toub", "shape": "dot", "title": "supplier: Larsen and Toubro Limited"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_5021", "label": "SHIVAM BHARTIA ", "shape": "dot", "title": "supplier: SHIVAM BHARTIA JV"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_37", "label": "Department of H", "shape": "dot", "title": "buyer: Department of Housing and Urban Affairs"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_41", "label": "Department of W", "shape": "dot", "title": "buyer: Department of Water Resources"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_79", "label": "Principal Secre", "shape": "dot", "title": "buyer: Principal Secretary- P and RD- Assam Secretariat"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_4980", "label": "SGCCL-ANPL", "shape": "dot", "title": "supplier: SGCCL-ANPL"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_1511", "label": "Flexituff Ventu", "shape": "dot", "title": "supplier: Flexituff Ventures International Ltd."}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_6186", "label": "ZED ENGINEERS", "shape": "dot", "title": "supplier: ZED ENGINEERS"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_429", "label": "Adani Transmiss", "shape": "dot", "title": "supplier: Adani Transmission Limited"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_5446", "label": "Sailaja_Anil (J", "shape": "dot", "title": "supplier: Sailaja_Anil (JV)"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_2118", "label": "Jayanta Khaund", "shape": "dot", "title": "supplier: Jayanta Khaund"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_5032", "label": "SHREE GAUTAM CO", "shape": "dot", "title": "supplier: SHREE GAUTAM CONSTRUCTION CO. LTD."}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_44", "label": "Director- Fire ", "shape": "dot", "title": "buyer: Director- Fire and Emergency Services-Assam"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_84", "label": "Public Works Ro", "shape": "dot", "title": "buyer: Public Works Roads Department"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_1382", "label": "Dineshchandra R", "shape": "dot", "title": "supplier: Dineshchandra R Agrawal Infracon Pvt. Ltd."}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_516", "label": "Apraava Energy ", "shape": "dot", "title": "supplier: Apraava Energy Private Limited"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_6291", "label": "sp singla const", "shape": "dot", "title": "supplier: sp singla constructions pvt ltd"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_66", "label": "Industries and ", "shape": "dot", "title": "buyer: Industries and Commerce Department"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_59", "label": "Guwahati Munici", "shape": "dot", "title": "buyer: Guwahati Municipal Corporation"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_12", "label": "Assam Power Dis", "shape": "dot", "title": "buyer: Assam Power Distribution Company Ltd"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_71", "label": "Karbi Anglong A", "shape": "dot", "title": "buyer: Karbi Anglong Autonomous Council"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_4739", "label": "Rank Projects a", "shape": "dot", "title": "supplier: Rank Projects and development private limited"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_4", "label": "Assam Agricultu", "shape": "dot", "title": "buyer: Assam Agricultural University"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_2878", "label": "M/S SOBNAM TRAD", "shape": "dot", "title": "supplier: M/S SOBNAM TRADERS"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_21", "label": "Assam State Tra", "shape": "dot", "title": "buyer: Assam State Transport Corporation"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_2933", "label": "M/S. M.P. AGARW", "shape": "dot", "title": "supplier: M/S. M.P. AGARWALLA"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_6232", "label": "hitech construc", "shape": "dot", "title": "supplier: hitech construction"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_6046", "label": "UCN CONSTRUCTIO", "shape": "dot", "title": "supplier: UCN CONSTRUCTION COMPANY PRIVATE LIMITED"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_82", "label": "Public Health E", "shape": "dot", "title": "buyer: Public Health Engineering Department"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_70", "label": "Irrigation Depa", "shape": "dot", "title": "buyer: Irrigation Department"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_9", "label": "Assam Police", "shape": "dot", "title": "buyer: Assam Police"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_60", "label": "Guwahati Smart ", "shape": "dot", "title": "buyer: Guwahati Smart City Ltd."}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_1653", "label": "Genus Power Inf", "shape": "dot", "title": "supplier: Genus Power Infrastructures Ltd."}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_6164", "label": "Win Power Infra", "shape": "dot", "title": "supplier: Win Power Infra Pvt. Ltd."}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_75", "label": "Office of the C", "shape": "dot", "title": "buyer: Office of the Chief Electoral Officer Assam"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_5525", "label": "Shree Gautam Co", "shape": "dot", "title": "supplier: Shree Gautam Construction Co. Ltd."}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_3005", "label": "M/s NS Electric", "shape": "dot", "title": "supplier: M/s NS Electrical Construction"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_40", "label": "Department of T", "shape": "dot", "title": "buyer: Department of Tourism"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_38", "label": "Department of L", "shape": "dot", "title": "buyer: Department of Labour and Welfare"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_434", "label": "Ahluwalia Contr", "shape": "dot", "title": "supplier: Ahluwalia Contracts India Ltd."}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_3851", "label": "NK POWER AND IN", "shape": "dot", "title": "supplier: NK POWER AND INFRASTRUCTURE PRIVATE LIMITED"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_5524", "label": "Shree Gautam Co", "shape": "dot", "title": "supplier: Shree Gautam Construction Co Ltd"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_24", "label": "BODOLAND UNIVER", "shape": "dot", "title": "buyer: BODOLAND UNIVERSITY"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_6019", "label": "Telecommunicati", "shape": "dot", "title": "supplier: Telecommunications Consultants India Limited"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_64", "label": "Home B", "shape": "dot", "title": "buyer: Home B"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_45", "label": "Directorate of ", "shape": "dot", "title": "buyer: Directorate of Agriculture and Assam Seed Corporation"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_1811", "label": "Hi-Print Meteri", "shape": "dot", "title": "supplier: Hi-Print Metering Solutions Private Limited"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_878", "label": "Bhartia Infra P", "shape": "dot", "title": "supplier: Bhartia Infra Projects Ltd"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_10", "label": "Assam Police Ho", "shape": "dot", "title": "buyer: Assam Police Housing Corporation Ltd"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_3989", "label": "ORIENTAL ENGINE", "shape": "dot", "title": "supplier: ORIENTAL ENGINEERS"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_2", "label": "4 Star - Shiva ", "shape": "dot", "title": "supplier: 4 Star - Shiva Harlalka(JV)"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_1883", "label": "INTELLISMART IN", "shape": "dot", "title": "supplier: INTELLISMART INFRASTRUCTURE PRIVATE LIMITED"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_6017", "label": "Technosys Secur", "shape": "dot", "title": "supplier: Technosys Security Systems Private Limited"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_2418", "label": "L\u0026T GEOSTRUCTUR", "shape": "dot", "title": "supplier: L\u0026T GEOSTRUCTURE PRIVATE LIMTIED"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_5685", "label": "Sri Gopikrishna", "shape": "dot", "title": "supplier: Sri Gopikrishna Infrastructure Pvt Ltd"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_2393", "label": "Kishore Borah", "shape": "dot", "title": "supplier: Kishore Borah"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_54", "label": "Food Civil Supp", "shape": "dot", "title": "buyer: Food Civil Supplies and Consumer Affairs Department"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_31", "label": "Cooperation Dep", "shape": "dot", "title": "buyer: Cooperation Department"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_97", "label": "Transport Depar", "shape": "dot", "title": "buyer: Transport Department- Externally Funded Projects"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_25", "label": "Bodoland Territ", "shape": "dot", "title": "buyer: Bodoland Territorial Council"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_83", "label": "Public Works Bu", "shape": "dot", "title": "buyer: Public Works Building and NH Department"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_275", "label": "ANUPAM NIRMAN P", "shape": "dot", "title": "supplier: ANUPAM NIRMAN PVT. LTD."}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_2001", "label": "JC Construction", "shape": "dot", "title": "supplier: JC Construction Pvt Ltd"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_26", "label": "Bodoland Territ", "shape": "dot", "title": "buyer: Bodoland Territorial Council-PWD"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_76", "label": "ABHIJIT PATOWAR", "shape": "dot", "title": "supplier: ABHIJIT PATOWARY"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_91", "label": "Social Welfare ", "shape": "dot", "title": "buyer: Social Welfare Department"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_49", "label": "Directorate of ", "shape": "dot", "title": "buyer: Directorate of Sports and Youth Welfare - Assam"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_2", "label": "Animal Husbandr", "shape": "dot", "title": "buyer: Animal Husbandry and Veterinary Department"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_55", "label": "Gauhati High Co", "shape": "dot", "title": "buyer: Gauhati High Court - Guwahati"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_6110", "label": "Uneecops Techno", "shape": "dot", "title": "supplier: Uneecops Technologies Ltd"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_23", "label": "Axom Sarba Siks", "shape": "dot", "title": "buyer: Axom Sarba Siksha Abhijan Mission"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_2914", "label": "M/S U.K. ENTERP", "shape": "dot", "title": "supplier: M/S U.K. ENTERPRISE"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_98", "label": "Urban Affairs D", "shape": "dot", "title": "buyer: Urban Affairs Department Externally Aided Project"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_1893", "label": "ITD Cementation", "shape": "dot", "title": "supplier: ITD Cementation India Limited"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_14", "label": "Assam Power Gen", "shape": "dot", "title": "buyer: Assam Power Generation Company Limited APGCL - ADB"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_102", "label": "Welfare of Plai", "shape": "dot", "title": "buyer: Welfare of Plain Tribes and Backward Classes"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_78", "label": "Pr. Chief Conse", "shape": "dot", "title": "buyer: Pr. Chief Conservator of Forest and Head of Forest Force"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_2584", "label": "M/S Badri Rai \u0026", "shape": "dot", "title": "supplier: M/S Badri Rai \u0026 Company"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_74", "label": "National Health", "shape": "dot", "title": "buyer: National Health Mission"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_61", "label": "Health and Fami", "shape": "dot", "title": "buyer: Health and Family Welfare Department"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_80", "label": "Principal Secre", "shape": "dot", "title": "buyer: Principal Secretary-Department of Information Technology"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_5", "label": "Assam Electrici", "shape": "dot", "title": "buyer: Assam Electricity Grid Corporation Ltd"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_56", "label": "Gauhati Univers", "shape": "dot", "title": "buyer: Gauhati University"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_3000", "label": "M/s Macrocosm B", "shape": "dot", "title": "supplier: M/s Macrocosm Builders"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_48", "label": "Directorate of ", "shape": "dot", "title": "buyer: Directorate of Land Records and Survey etc. Assam"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_92", "label": "Soil Conservati", "shape": "dot", "title": "buyer: Soil Conservation Department"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_85", "label": "Public Works Ro", "shape": "dot", "title": "buyer: Public Works Roads Department-Externally Aided Project"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_2934", "label": "M/S. MPA-BLA (J", "shape": "dot", "title": "supplier: M/S. MPA-BLA (JV)"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_2754", "label": "M/S N.E. Infra", "shape": "dot", "title": "supplier: M/S N.E. Infra"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_99", "label": "Urban Developme", "shape": "dot", "title": "buyer: Urban Development Department"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_131", "label": "AGH CONSTRUCTIO", "shape": "dot", "title": "supplier: AGH CONSTRUCTIONS PRIVATE LIMITED"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_3028", "label": "M/s Sanwarmal K", "shape": "dot", "title": "supplier: M/s Sanwarmal Khetawat"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_4807", "label": "S\u0026PINFRASTRUCTU", "shape": "dot", "title": "supplier: S\u0026PINFRASTRUCTUREDEVELOPERS(P)LTD\u0026SHIVAHARLALKA(JV)"}, {"color": "#1f77b4", "font": {"color": "black"}, "id": "B_27", "label": "Bodoland Territ", "shape": "dot", "title": "buyer: Bodoland Territorial Council-WRD"}, {"color": "#ff7f0e", "font": {"color": "black"}, "id": "S_236", "label": "ANIL DAS", "shape": "dot", "title": "supplier: ANIL DAS"}]);
+                  edges = new vis.DataSet([{"from": "B_86", "to": "S_6110", "value": 966686680.0}, {"from": "S_237", "to": "B_83", "value": 58481337.0}, {"from": "S_237", "to": "B_84", "value": 1080388454.0}, {"from": "S_3982", "to": "B_4", "value": 17799300.0}, {"from": "S_3982", "to": "B_21", "value": 213546880.0}, {"from": "S_3982", "to": "B_83", "value": 1520005666.0}, {"from": "B_11", "to": "S_2914", "value": 1266000000.0}, {"from": "B_11", "to": "S_5685", "value": 1357722120.0}, {"from": "S_2474", "to": "B_83", "value": 8618860000.0}, {"from": "S_5021", "to": "B_85", "value": 2603425041.0}, {"from": "B_37", "to": "S_2754", "value": 267300000.0}, {"from": "B_37", "to": "S_2933", "value": 278763066.0}, {"from": "B_37", "to": "S_6046", "value": 305668279.0}, {"from": "B_41", "to": "S_76", "value": 163880616.0}, {"from": "B_41", "to": "S_236", "value": 895319171.43}, {"from": "B_41", "to": "S_275", "value": 190483252.33}, {"from": "B_41", "to": "S_1511", "value": 1051821517.0}, {"from": "B_41", "to": "S_2933", "value": 557920341.73}, {"from": "B_41", "to": "S_3000", "value": 44921496.38}, {"from": "B_41", "to": "S_3989", "value": 44693834.0}, {"from": "B_41", "to": "S_6046", "value": 524620010.19}, {"from": "B_41", "to": "S_6186", "value": 984394733.74}, {"from": "B_79", "to": "S_3000", "value": 12434985.26}, {"from": "S_4980", "to": "B_85", "value": 5196372995.0}, {"from": "S_429", "to": "B_12", "value": 8447641998.6}, {"from": "S_5446", "to": "B_84", "value": 1481773197.0}, {"from": "S_2118", "to": "B_5", "value": 113941683.0}, {"from": "S_2118", "to": "B_12", "value": 846990119.3}, {"from": "S_2118", "to": "B_45", "value": 11358816.11}, {"from": "S_5032", "to": "B_83", "value": 518109418.0}, {"from": "S_5032", "to": "B_98", "value": 409228605.0}, {"from": "B_84", "to": "S_2", "value": 938973406.0}, {"from": "B_84", "to": "S_76", "value": 834105687.61}, {"from": "B_84", "to": "S_131", "value": 1184939820.0}, {"from": "B_84", "to": "S_236", "value": 323711473.0}, {"from": "B_84", "to": "S_275", "value": 2685520229.0}, {"from": "B_84", "to": "S_878", "value": 571050000.0}, {"from": "B_84", "to": "S_2001", "value": 262222870.0}, {"from": "B_84", "to": "S_2393", "value": 1582069267.25}, {"from": "B_84", "to": "S_2878", "value": 775953240.0}, {"from": "B_84", "to": "S_2933", "value": 277419700.4}, {"from": "B_84", "to": "S_2934", "value": 947154760.0}, {"from": "B_84", "to": "S_3000", "value": 66965177.0}, {"from": "B_84", "to": "S_3028", "value": 1794736244.0}, {"from": "B_84", "to": "S_5524", "value": 1033321136.0}, {"from": "B_84", "to": "S_6046", "value": 231377158.0}, {"from": "S_1382", "to": "B_83", "value": 879682500.0}, {"from": "S_516", "to": "B_12", "value": 6585332462.61}, {"from": "S_6291", "to": "B_85", "value": 6947700000.0}, {"from": "B_12", "to": "S_1653", "value": 14421881706.119999}, {"from": "B_12", "to": "S_1811", "value": 14117850023.130001}, {"from": "B_12", "to": "S_1883", "value": 5663345059.799999}, {"from": "B_12", "to": "S_2914", "value": 217402686.11}, {"from": "B_12", "to": "S_3005", "value": 934140655.13}, {"from": "B_12", "to": "S_3851", "value": 1229448295.0}, {"from": "B_12", "to": "S_6164", "value": 1605385731.0}, {"from": "S_4739", "to": "B_83", "value": 2286098419.0}, {"from": "S_2933", "to": "B_70", "value": 25482870.0}, {"from": "S_2933", "to": "B_83", "value": 11991026.0}, {"from": "S_2933", "to": "B_102", "value": 22474691.94}, {"from": "S_6232", "to": "B_10", "value": 1565111111.0}, {"from": "B_82", "to": "S_3000", "value": 222750000.0}, {"from": "B_9", "to": "S_6019", "value": 936834566.0}, {"from": "B_60", "to": "S_1893", "value": 3273066089.0}, {"from": "B_60", "to": "S_2754", "value": 108236599.1}, {"from": "B_60", "to": "S_6017", "value": 784442213.66}, {"from": "S_5525", "to": "B_83", "value": 1039283520.0}, {"from": "B_40", "to": "S_275", "value": 465650319.0}, {"from": "B_40", "to": "S_2754", "value": 148672908.0}, {"from": "S_434", "to": "B_83", "value": 2951097004.0}, {"from": "S_5524", "to": "B_83", "value": 271780618.0}, {"from": "S_878", "to": "B_83", "value": 717226152.0}, {"from": "B_10", "to": "S_2584", "value": 1399344801.51}, {"from": "S_3989", "to": "B_83", "value": 857439957.0}, {"from": "S_2418", "to": "B_97", "value": 2894500000.0}, {"from": "B_83", "to": "S_275", "value": 738498750.0}, {"from": "B_83", "to": "S_2001", "value": 490973963.0}, {"from": "B_83", "to": "S_2754", "value": 11336400.0}, {"from": "B_83", "to": "S_3000", "value": 1533065918.0}, {"from": "B_83", "to": "S_3028", "value": 268452895.0}, {"from": "B_26", "to": "S_131", "value": 108214486.0}, {"from": "B_26", "to": "S_2754", "value": 135256383.28}, {"from": "B_102", "to": "S_2754", "value": 546291777.0}, {"from": "B_78", "to": "S_3000", "value": 61289994.0}, {"from": "B_85", "to": "S_236", "value": 89246777.0}, {"from": "B_85", "to": "S_4807", "value": 1210945000.0}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"forceAtlas2Based": {"gravitationalConstant": -50, "springLength": 100}, "minVelocity": 0.75, "solver": "forceAtlas2Based"}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

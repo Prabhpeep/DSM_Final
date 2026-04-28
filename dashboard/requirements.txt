@@ -1,0 +1,10 @@
+streamlit
+pandas
+sqlalchemy
+plotly
+folium
+streamlit-folium
+pyvis
+networkx
+scipy
+requests

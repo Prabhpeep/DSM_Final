@@ -1,0 +1,49 @@
+examples:
+  - input: "Which buyers have the highest single-bidder rate in construction (buildings)?"
+    sql_cmd: >
+      SELECT 
+        b.buyer_name,
+        COUNT(*) as total_tenders,
+        SUM(CASE WHEN t.number_of_tenderers = 1 AND t.procurement_method != 'Single' THEN 1 ELSE 0 END) as single_bidder_count,
+        CAST(SUM(CASE WHEN t.number_of_tenderers = 1 AND t.procurement_method != 'Single' THEN 1 ELSE 0 END) AS REAL) / COUNT(*) as single_bidder_rate
+      FROM fact_tenders t
+      JOIN dim_buyer b ON t.buyer_id = b.buyer_id
+      JOIN dim_sector s ON t.sector_id = s.sector_id
+      WHERE s.sector_name = 'buildings'
+      GROUP BY b.buyer_name
+      HAVING total_tenders >= 10
+      ORDER BY single_bidder_rate DESC
+      LIMIT 10;
+  
+  - input: "What are the top 10 suppliers by total award value in Assam?"
+    sql_cmd: >
+      SELECT 
+        s.supplier_name,
+        SUM(a.award_value_amount) as total_award_value
+      FROM fact_awards a
+      JOIN dim_supplier s ON a.supplier_canonical_id = s.supplier_canonical_id
+      WHERE a.award_value_amount IS NOT NULL
+      GROUP BY s.supplier_name
+      ORDER BY total_award_value DESC
+      LIMIT 10;
+
+  - input: "Show me the top 5 sectors with the most tenders in 2021-2022."
+    sql_cmd: >
+      SELECT 
+        s.sector_name,
+        COUNT(*) as total_tenders
+      FROM fact_tenders t
+      JOIN dim_sector s ON t.sector_id = s.sector_id
+      WHERE t.fiscal_year = '2021-2022'
+      GROUP BY s.sector_name
+      ORDER BY total_tenders DESC
+      LIMIT 5;
+
+  - input: "What is the average price deviation for road contracts?"
+    sql_cmd: >
+      SELECT 
+        AVG(a.price_deviation) as avg_price_deviation
+      FROM fact_awards a
+      JOIN fact_tenders t ON a.ocid = t.ocid
+      JOIN dim_sector s ON t.sector_id = s.sector_id
+      WHERE s.sector_name = 'roads' AND a.price_deviation IS NOT NULL;
