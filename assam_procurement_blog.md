@@ -512,6 +512,56 @@ direction.
 
 ---
 
+## Policy Recommendations 
+
+1. **Mandatory Award Publication**. The empirical basis for this
+recommendation is the 71.4% award-publication gap observed within the dataset, an
+omission that renders systemic, data-driven oversight structurally incomplete. To rec
+tify this, it is recommended that the state government categorically require all procuring
+entities to publish comprehensive award outcomes within 30 days of contract signing.
+This publication must strictly adhere to the machine-readable Open Contracting Data
+Standard (OCDS) format. Furthermore, persistent non-publication of award data should
+automatically trigger an administrative escalation to the Comptroller and Auditor Gen
+eral (CAG).
+
+2. **Award-Stage HHI Triggers and Evaluation Committee
+Rotation.** The analysis of the “Captured-Supplier Buyers” cluster exhibits an
+extreme HHI of 4,533 and a top-three supplier share of 92%, which demonstrates
+that open-tender procedural compliance is insufficient to ensure genuinely competitive
+market outcomes. Consequently, it is recommended that a second-tier administrative
+review mechanism be introduced. This oversight mechanism should be automatically triggered
+whenever a procuring department’s rolling supplier HHI exceeds the highly concentrated threshold
+of 2,500 over two consecutive financial years. Furthermore, the mandatory rotation of evaluation
+committee members must be formally enforced for any buyer flagged under these criteria.
+
+4. **Sector-Specific Single-Bidder Floors and Re-Tendering Rules** The structural integrity
+analysis reveals that while the global single-bidder rate remains at approximately 6%, massive
+sectoral variance exists; notably, the Department of Cultural Affairs recorded a 61.0% single-bidder
+rate, which is approximately ten times the state baseline. In response, the Finance Department should
+establish sector-specific minimum competition benchmarks rather than relying on a uniform state-wide standard.
+Specifically, any open tender valued above 25 lakh that receives fewer than three valid bids
+must trigger mandatory re-tendering procedures, or alternatively, necessitate a formal,
+written justification submitted directly to the central financial authority.
+
+5. **Threshold Oversight Reform at 1 Crore. The identification** of an excess mass ratio of
+approximately 1.7 immediately below the 1 crore approval threshold is a statistical anomaly
+highly consistent with deliberate contract-sizing or fragmentation behaviour designed to bypass
+heightened scrutiny. To mitigate this evasion, the state should implement randomised, post-award
+audits specifically targeting contracts valued in the tight interval between 90 lakh and 1 crore.
+Additionally, procuring entities must be required to provide a written, auditable justification
+whenever the same supplier receives multiple contract awards immediately below this statutory
+threshold within a single financial year.
+
+6. **Mandatory Structured District Fields at Portal Level**: The geographic classification indicates
+that 35.8% of state tenders are artificially attributed to Kamrup Metropolitan. This
+severe spatial distortion occurs as a consequence of using centralised procuring office
+addresses rather than actual project execution locations, requiring complex, post-hoc natural
+language processing classifiers to correct. The National Informatics Centre (NIC) should mandate
+a structured “execution district” dropdown field within all initial e-procurement portal submissions.
+This represents a low-cost, high-impact administrative intervention that would render spatial tracking
+and geographic equity analysis instantaneously reliable without necessitating analytical
+post-processing.
+
 ## Reproducibility
 
 The analysis is implemented in Python, with dependencies limited to standard data science
